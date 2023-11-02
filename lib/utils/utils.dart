@@ -3,28 +3,30 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
+import 'package:oasis_dni/env/environment.dart';
+import 'package:oasis_dni/utils/request_helper.dart';
 
 class Utils {
-  static const String DNI_REGEX = r"^[0-9]{8}$";
+  static const String dniRegex = r"^[0-9]{8}$";
 
   static PlatformType getPlatformType() {
     if (defaultTargetPlatform == TargetPlatform.android) {
-      return PlatformType.Android;
+      return PlatformType.android;
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {
-      return PlatformType.Web;
+      return PlatformType.web;
     } else if (defaultTargetPlatform == TargetPlatform.windows) {
-      return PlatformType.Windows;
+      return PlatformType.windows;
     } else if (defaultTargetPlatform == TargetPlatform.linux) {
-      return PlatformType.Linux;
+      return PlatformType.linux;
     } else if (defaultTargetPlatform == TargetPlatform.macOS) {
-      return PlatformType.MacOS;
+      return PlatformType.macos;
     } else {
-      return PlatformType.Web;
+      return PlatformType.web;
     }
   }
 
   static bool validateDNI(String dni) {
-    final RegExp dniExp = RegExp(DNI_REGEX);
+    final RegExp dniExp = RegExp(dniRegex);
     return dniExp.hasMatch(dni);
   }
 
@@ -47,22 +49,47 @@ class Utils {
             position: MotionToastPosition.bottom)
         .show(context);
   }
+
+  static Future<bool> isInternetAvailable() async {
+    try {
+      final Response response =
+          await RequestHelper.getRequestToServer("https://www.google.com");
+      return response.statusCode == 200;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  static Future<bool> isBackendOnline() async {
+    String checkUrl = "status/ping";
+    try {
+      final Response response = await RequestHelper.getRequestToServer(
+          "${Envionment.apiUrl}/$checkUrl");
+      if (response.statusCode == 200) {
+        return response.body == "Pong!";
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
 }
 
 enum PlatformType {
-  Android,
-  Web,
-  Windows,
-  Linux,
-  MacOS;
+  android,
+  web,
+  windows,
+  linux,
+  macos;
 
-  bool get hasLocateCredentials => this == PlatformType.Android;
+  bool get hasLocateCredentials => this == PlatformType.android;
 
   bool get canPrint =>
-      this == PlatformType.Web ||
-      this == PlatformType.Windows ||
-      this == PlatformType.Linux ||
-      this == PlatformType.MacOS;
+      this == PlatformType.web ||
+      this == PlatformType.windows ||
+      this == PlatformType.linux ||
+      this == PlatformType.macos;
 
   String get name => toString().split('.').last;
 }
