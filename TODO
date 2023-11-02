@@ -1,0 +1,7 @@
+
+Todo:
+  ☐ Crear la pantalla de login (take from old src)
+  ☐ Conectar con la rest api
+  ☐ Copiar lo de request dni
+  ☐ Agregar apartado de imagen
+  ☐ Renderizr la imagen pasar de base64 a img
