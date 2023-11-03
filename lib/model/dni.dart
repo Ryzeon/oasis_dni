@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 class DNI {
   final String id;
   final String nombre_completo;
@@ -43,7 +45,6 @@ class DNI {
   }
 
   String getNiceDirection() {
-    if (direccion == null) return "N/A";
     if (direccion.isEmpty) return "N/A";
     if (direccion == "null") return "N/A";
     return direccion;
