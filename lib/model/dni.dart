@@ -19,6 +19,12 @@ class DNI {
   final String ubigeo_sunat;
   final Object ubigeo;
 
+  final String foto;
+  final String firma;
+  final String hderecha;
+  final String hizquierda;
+  final String fotoPerfil;
+
   DNI(
       this.id,
       this.nombre_completo,
@@ -36,11 +42,17 @@ class DNI {
       this.direccion_completa,
       this.ubigeo_reniec,
       this.ubigeo_sunat,
-      this.ubigeo);
+      this.ubigeo,
+      this.foto,
+      this.firma,
+      this.hderecha,
+      this.hizquierda,
+      this.fotoPerfil
+      );
 
   int getAge() {
     final date = fecha_nacimiento.split("-");
-    final birth = DateTime(int.parse(date[0]), int.parse(date[1]), int.parse(date[2]));
+    final birth = DateTime(int.parse(date[2]), int.parse(date[1]), int.parse(date[0]));
     return DateTime.now().difference(birth).inDays ~/ 365;
   }
 
@@ -55,6 +67,7 @@ class DNI {
   }
 
   factory DNI.fromJson(Map<String, dynamic> json) {
+    // print('json: $json');
     return DNI(
       json["id"],
       json["nombre_completo"],
@@ -73,6 +86,11 @@ class DNI {
       json["ubigeo_reniec"],
       json["ubigeo_sunat"],
       json["ubigeo"],
+      json["foto"],
+      json["firma"],
+      json["hderecha"],
+      json["hizquierda"],
+      json["fotoPerfil"]
     );
   }
 }
