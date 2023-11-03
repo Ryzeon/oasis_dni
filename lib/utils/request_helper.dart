@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
+import 'package:oasis_dni/auth/auth_factory.dart';
 import 'package:oasis_dni/env/environment.dart';
 import 'package:oasis_dni/request/request_method.dart';
 
@@ -24,13 +25,15 @@ class RequestHelper {
     if (!url.contains("://")) {
       url = Envionment.apiUrl + url;
     }
+    print("Request to fix $url");
     try {
       final uriData = Uri.parse(url);
       final requestHeaders = {
         "Content-Type": "application/json",
       };
       if (auth) {
-        requestHeaders["Authorization"] = "Bearer token";
+        requestHeaders["Authorization"] =
+            "Bearer ${await AuthFactory.instance.authProvider.getToken()}";
         // await AuthFactory.instance.authProvider.getToken();
       }
       print("Sending request to $url");
@@ -61,7 +64,7 @@ class RequestHelper {
       }
       print("Response from ${response.statusCode}");
       if (response.statusCode == 402) {
-        // await AuthFactory.instance.authProvider.refresh();
+        await AuthFactory.instance.authProvider.refresh();
         return getRequestToServer(url,
             requestMethod: requestMethod, bodydata: bodydata, auth: auth);
       }
