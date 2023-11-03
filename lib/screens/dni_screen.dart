@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:oasis_dni/lang.dart';
 import 'package:oasis_dni/model/dni.dart';
 import 'package:oasis_dni/request/request.dart';
@@ -112,7 +111,7 @@ class _DNIScreenState extends State<DNIScreen>
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      height: 130 + (_valid ? 0 : 30),
+                      height: 130 + (_valid ? 10 : 30),
                       width: MediaQuery.of(context).size.width / 1.1,
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.3),

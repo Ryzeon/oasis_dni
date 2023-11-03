@@ -29,7 +29,9 @@ class RequestHelper {
     try {
       final uriData = Uri.parse(url);
       final requestHeaders = {
+        "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
+        'Accept': '*/*'
       };
       if (auth) {
         requestHeaders["Authorization"] =
@@ -70,6 +72,7 @@ class RequestHelper {
       }
       return response;
     } catch (e) {
+      print(e);
       return Future.error(e);
     }
   }

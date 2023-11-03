@@ -51,13 +51,14 @@ class Utils {
   }
 
   static Future<bool> isInternetAvailable() async {
-    try {
-      final Response response =
-          await RequestHelper.getRequestToServer("https://www.google.com");
-      return response.statusCode == 200;
-    } catch (e) {
-      return false;
-    }
+    // try {
+    //   final Response response =
+    //       await RequestHelper.getRequestToServer("https://www.google.com");
+    //   return response.statusCode == 200;
+    // } catch (e) {
+    //   return false;
+    // }
+    return true;
   }
 
   static Future<bool> isBackendOnline() async {
