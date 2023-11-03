@@ -4,6 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
 import 'package:oasis_dni/lang.dart';
+import 'package:oasis_dni/screens/dni_screen.dart';
+import 'package:oasis_dni/utils/login/login_utils.dart';
 import 'package:oasis_dni/utils/utils.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -39,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
             {
               _reason = "No hay conexion a internet",
               MotionToast.error(
-                      title: Text("Error!"),
+                      title: const Text("Error!"),
                       description: Text(_reason),
                       position: MotionToastPosition.bottom)
                   .show(context)
@@ -51,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       {
                         _reason = "El servidor no esta disponible",
                         MotionToast.error(
-                                title: Text("Error!"),
+                                title: const Text("Error!"),
                                 description: Text(_reason),
                                 position: MotionToastPosition.bottom)
                             .show(context)
@@ -77,7 +79,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        const TabsScreen()))
+                                                        const DNIScreen())
+                                                        )
                                           }
                                       })
                                 }
@@ -252,8 +255,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                           position: MotionToastPosition.bottom)
                                       .show(context);
                                 } else {
-                                  String _dni = _textEditingController.text;
-                                  String _password =
+                                  String dni = _textEditingController.text;
+                                  String password =
                                       _textEditingController_2.text;
                                   // login
 
@@ -264,14 +267,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                           position: MotionToastPosition.bottom)
                                       .show(context);
 
-                                  if (await LoginUtils.login(_dni, _password)) {
+                                  if (await LoginUtils.login(dni, password)) {
                                     TextInput.finishAutofillContext();
-                                    LoginUtils.saveSession(_dni, _password);
-                                    Navigator.pushReplacement(
+                                    LoginUtils.saveSession(dni, password);
+                                    Navigator.pushReplacement(  
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const TabsScreen()));
+                                                const DNIScreen()));
                                   } else {
                                     MotionToast.error(
                                             title: const Text('Error!'),
