@@ -21,11 +21,11 @@ class RequestHelper {
       {RequestMethod requestMethod = RequestMethod.GET,
       Map<String, dynamic>? bodydata,
       bool auth = false}) async {
-    print("Request to $url");
+    // print("Request to $url"); 
     if (!url.contains("://")) {
       url = Envionment.apiUrl + url;
     }
-    print("Request to fix $url");
+    // print("Request to fix $url"); 
     try {
       final uriData = Uri.parse(url);
       final requestHeaders = {
@@ -36,9 +36,9 @@ class RequestHelper {
             "Bearer ${await AuthFactory.instance.authProvider.getToken()}";
         // await AuthFactory.instance.authProvider.getToken();
       }
-      print("Sending request to $url");
-      print("With headers $requestHeaders");
-      print("With body $bodydata");
+      // print("Sending request to $url"); 
+      // print("With headers $requestHeaders");
+      // print("With body $bodydata");
       final Response response;
       switch (requestMethod) {
         case RequestMethod.GET:
@@ -70,6 +70,7 @@ class RequestHelper {
       }
       return response;
     } catch (e) {
+      print("Error $e");
       return Future.error(e);
     }
   }

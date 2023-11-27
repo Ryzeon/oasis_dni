@@ -53,7 +53,7 @@ class Utils {
   static Future<bool> isInternetAvailable() async {
     try {
       final Response response =
-          await RequestHelper.getRequestToServer("https://www.google.com");
+          await RequestHelper.getRequestToServer("http://ryzeon.me/index.html");
       return response.statusCode == 200;
     } catch (e) {
       return false;
