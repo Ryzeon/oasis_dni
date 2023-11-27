@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:oasis_dni/lang.dart';
 import 'package:oasis_dni/model/dni.dart';
 import 'package:oasis_dni/request/request.dart';
@@ -31,7 +30,7 @@ class _DNIScreenState extends State<DNIScreen>
 
   bool _isLoaderVisible = false;
 
-  String? _imageBytes;
+  String? _imageBytes, _dHuella, _iHuella, _firma;
 
   String showInformation =
       "Sin información, por favor ingrese su número de documento";
@@ -50,7 +49,30 @@ class _DNIScreenState extends State<DNIScreen>
     setState(() {
       _information = true;
       _imageBytes = "data:image/jpeg;base64,${dni.foto}";
+      _dHuella = "data:image/jpeg;base64,${dni.hderecha}";
+      _iHuella = "data:image/jpeg;base64,${dni.hizquierda}";
+      _firma = "data:image/jpeg;base64,${dni.firma}";
     });
+  }
+
+  Widget getWidget(String? src) {
+    return information
+        ? getImgWidget(src)
+        : const Icon(
+            Icons.person,
+            size: 200,
+          );
+  }
+
+  Widget getImgWidget(String? src) {
+    return src != null
+        ? Image.memory(
+            Uri.parse(src.replaceAll(RegExp(r'\s+'), ''))
+                    .data
+                    ?.contentAsBytes() ??
+                Uint8List(0),
+          )
+        : const CircularProgressIndicator();
   }
 
   void handleSubmitted() async {
@@ -112,7 +134,7 @@ class _DNIScreenState extends State<DNIScreen>
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      height: 130 + (_valid ? 0 : 30),
+                      height: 130 + (_valid ? 10 : 30),
                       width: MediaQuery.of(context).size.width / 1.1,
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.3),
@@ -238,20 +260,52 @@ class _DNIScreenState extends State<DNIScreen>
                                 color: Colors.white.withOpacity(0.3),
                                 borderRadius: BorderRadius.circular(20),
                               ),
-                              child: information
-                                  ? _imageBytes != null
-                                      ? Image.memory(
-                                          Uri.parse(_imageBytes!.replaceAll(
-                                                      RegExp(r'\s+'), ''))
-                                                  .data
-                                                  ?.contentAsBytes() ??
-                                              Uint8List(0),
-                                        )
-                                      : const CircularProgressIndicator()
-                                  : const Icon(
-                                      Icons.person,
-                                      size: 200,
-                                    ),
+                              child: getWidget(_imageBytes),
+                            ),
+                            const SizedBox(height: 20),
+                            Container(
+                              height: 400,
+                              width: MediaQuery.of(context).size.width / 1.1,
+                              alignment: Alignment.center,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        height: 300,
+                                        width: 300,
+                                        decoration: BoxDecoration(
+                                            color:
+                                                Colors.white.withOpacity(0.3),
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        child: getWidget(_dHuella),
+                                      ),
+                                      const SizedBox(width: 20),
+                                      Container(
+                                        height: 300,
+                                        width: 300,
+                                        decoration: BoxDecoration(
+                                            color:
+                                                Colors.white.withOpacity(0.3),
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        child: getWidget(_iHuella),
+                                      ),
+                                      const SizedBox(width: 20),
+                                      Container(
+                                        height: 200,
+                                        width: 300,
+                                        decoration: BoxDecoration(
+                                            color:
+                                                Colors.white.withOpacity(0.3),
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        child: getWidget(_firma),
+                                      ),
+                                    ]),
+                              ),
                             ),
                             const SizedBox(height: 20),
                           ],
